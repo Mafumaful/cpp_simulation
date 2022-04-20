@@ -16,3 +16,9 @@ include_directories(
 
 add_executable(filter_average src/filter_average.cpp)
 target_link_libraries(filter_average ${PYTHON_LIBRARIES})
+
+add_executable(filter_kalman_p src/filter_kalman_p.cpp)
+target_link_libraries(filter_kalman_p ${PYTHON_LIBRARIES})  
+
+add_executable(filter_kalman_pv src/filter_kalman_pv.cpp)
+target_link_libraries(filter_kalman_pv ${PYTHON_LIBRARIES})
