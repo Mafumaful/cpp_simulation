@@ -17,9 +17,9 @@ Vector3d generate_randown(float n)
 int main(int argc, char const *argv[])
 {
 
-    double dt = 0.1;
+    double dt = 0.01;
     double r_noise = 1;
-    double q_noise = 0.1;
+    double q_noise = 0.05;
     // the true number
     Vector3d p, v, a;
     p << 0, 0, 0;
