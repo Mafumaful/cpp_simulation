@@ -27,6 +27,7 @@ int main(int argc, char const *argv[])
     v << 2, 3, 10;
     a << 0, 0, -9.8;
 
+    // prepare to plot the 3D figure
     draw3D _plot;
 
     // // position with noise, this is the data we can observe
