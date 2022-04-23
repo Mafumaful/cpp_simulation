@@ -35,10 +35,7 @@ void draw3D::input_vector(Vector3d a, string name)
     }
     else
     {
-        x = it->second;
-        // 放入新值
-        x.push_back(a[0]);
-        _vector_map.at(name + "_x") = x;
+        _vector_map[name + "_x"].push_back(a[0]);
     }
 
     it = _vector_map.find(name + "_y");
@@ -51,10 +48,7 @@ void draw3D::input_vector(Vector3d a, string name)
     }
     else
     {
-        y = it->second;
-        // 放入新值
-        y.push_back(a[1]);
-        _vector_map.at(name + "_y") = y;
+        _vector_map[name + "_y"].push_back(a[1]);
     }
 
     it = _vector_map.find(name + "_z");
@@ -67,10 +61,7 @@ void draw3D::input_vector(Vector3d a, string name)
     }
     else
     {
-        z = it->second;
-        // 放入新值
-        z.push_back(a[2]);
-        _vector_map.at(name + "_z") = z;
+        _vector_map[name + "_z"].push_back(a[2]);
     }
 }
 
