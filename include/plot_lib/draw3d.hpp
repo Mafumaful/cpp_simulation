@@ -1,4 +1,5 @@
 #include "matplotlibcpp.h"
+#include <unordered_map>
 #include <string>
 #include <Eigen/Dense>
 
@@ -9,37 +10,86 @@ using namespace std;
 class draw3D
 {
 private:
-    vector<double> _x, _y, _z;
-    string _str;
+    unordered_map<string, vector<double>> _vector_map;
+    vector<string> _data_name;
 
 public:
-    void input_vector(Vector3d);
+    void input_vector(Vector3d, string);
     void plot(void);
-    draw3D(string str);
+    draw3D();
     ~draw3D();
 };
 
-void draw3D::input_vector(Vector3d a)
+void draw3D::input_vector(Vector3d a, string name)
 {
-    _x.push_back(a[0]);
-    _y.push_back(a[1]);
-    _z.push_back(a[2]);
+    vector<double> x, y, z;
+
+    auto it = _vector_map.find(name + "_x");
+    // 如果没有找到
+    if (it == _vector_map.end())
+    {
+        _data_name.push_back(name);
+        // 放入新值
+        x.push_back(a[0]);
+        _vector_map.insert({name + "_x", x});
+    }
+    else
+    {
+        x = it->second;
+        // 放入新值
+        x.push_back(a[0]);
+        _vector_map.at(name + "_x") = x;
+    }
+
+    it = _vector_map.find(name + "_y");
+    // 如果没有找到
+    if (it == _vector_map.end())
+    {
+        // 放入新值
+        y.push_back(a[1]);
+        _vector_map.insert({name + "_y", y});
+    }
+    else
+    {
+        y = it->second;
+        // 放入新值
+        y.push_back(a[1]);
+        _vector_map.at(name + "_y") = y;
+    }
+
+    it = _vector_map.find(name + "_z");
+    // 如果没有找到
+    if (it == _vector_map.end())
+    {
+        // 放入新值
+        z.push_back(a[2]);
+        _vector_map.insert({name + "_z", z});
+    }
+    else
+    {
+        z = it->second;
+        // 放入新值
+        z.push_back(a[2]);
+        _vector_map.at(name + "_z") = z;
+    }
 }
 
 void draw3D::plot()
 {
-    map<string, string> keywords3;
-    keywords3.insert(pair<string, string>("label", _str));
-    plt::plot3(_x, _y, _z, keywords3);
-    plt::xlabel("x label");
-    plt::ylabel("y label");
-    plt::set_zlabel("z label"); // set_zlabel rather than just zlabel, in accordance with the Axes3D method
-    plt::legend();
-
+    for (int i = 0; i < _data_name.size(); i++)
+    {
+        map<string, string> keywords3;
+        keywords3.insert(pair<string, string>("label", _data_name[i]));
+        plt::plot3(_vector_map[_data_name[i] + "_x"], _vector_map[_data_name[i] + "_y"], _vector_map[_data_name[i] + "_z"], keywords3);
+        plt::xlabel("x label");
+        plt::ylabel("y label");
+        plt::set_zlabel("z label"); // set_zlabel rather than just zlabel, in accordance with the Axes3D method
+        plt::legend();
+    }
     plt::show();
 }
 
-draw3D::draw3D(string str) : _str(str)
+draw3D::draw3D()
 {
 }
 

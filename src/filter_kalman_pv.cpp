@@ -1,5 +1,6 @@
 #include "matplotlibcpp.h"
 #include "kalman.hpp"
+#include "draw3d.hpp"
 #include <cmath>
 #include <random>
 
@@ -25,9 +26,8 @@ int main(int argc, char const *argv[])
     p << 0, 0, 0;
     v << 2, 3, 10;
     a << 0, 0, -9.8;
-    vector<double> x, y, z;
-    vector<double> f_x, f_y, f_z;
-    vector<double> noise_x, noise_y, noise_z;
+
+    draw3D _plot;
 
     // // position with noise, this is the data we can observe
     Vector3d p_noise = p + generate_randown(r_noise);
@@ -77,45 +77,13 @@ int main(int argc, char const *argv[])
         VectorXd filtered = _kf.kalman_measure(vec, F);
 
         // store the pose to plot
-        x.push_back(p[0]);
-        y.push_back(p[1]);
-        z.push_back(p[2]);
-
-        f_x.push_back(filtered[0]);
-        f_y.push_back(filtered[1]);
-        f_z.push_back(filtered[2]);
-
-        noise_x.push_back(p_noise[0]);
-        noise_y.push_back(p_noise[1]);
-        noise_z.push_back(p_noise[2]);
+        _plot.input_vector(p, "true number");
+        _plot.input_vector(p_noise, "noise");
+        _plot.input_vector(filtered.segment<3>(0), "filtered");
     }
 
     // plot
-    map<string, string> keywords;
-    keywords.insert(pair<string, string>("label", "ground true"));
-    plt::plot3(x, y, z, keywords);
-    plt::xlabel("x label");
-    plt::ylabel("y label");
-    plt::set_zlabel("z label"); // set_zlabel rather than just zlabel, in accordance with the Axes3D method
-    plt::legend();
-
-    map<string, string> keywords2;
-    keywords2.insert(pair<string, string>("label", "filtered"));
-    plt::plot3(f_x, f_y, f_z, keywords2);
-    plt::xlabel("x label");
-    plt::ylabel("y label");
-    plt::set_zlabel("z label"); // set_zlabel rather than just zlabel, in accordance with the Axes3D method
-    plt::legend();
-
-    map<string, string> keywords3;
-    keywords3.insert(pair<string, string>("label", "noise"));
-    plt::plot3(noise_x, noise_y, noise_z, keywords3);
-    plt::xlabel("x label");
-    plt::ylabel("y label");
-    plt::set_zlabel("z label"); // set_zlabel rather than just zlabel, in accordance with the Axes3D method
-    plt::legend();
-
-    plt::show();
+    _plot.plot();
 
     return 0;
 }
