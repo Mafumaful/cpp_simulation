@@ -10,15 +10,16 @@ class kalmanxd
 private:
     VectorXd X_hat_;   // 最优估计值
     VectorXd B_;       // 输入项
+    VectorXd U_;       // 输入矩阵
     MatrixXd Q_;       // 过程噪声
     MatrixXd R_;       // 测量噪声
     MatrixXd F_;       // 转化矩阵
     MatrixXd H_;       // 状态观测矩阵
-    MatrixXd U_;       // 输入矩阵
     MatrixXd P_;       // 协方差
     MatrixXd P_prior_; // 先验协方差
     MatrixXd Kk_;      // 卡尔曼增益
     MatrixXd Zk_;      // 当前测量量
+    MatrixXd G_;       // 控制矩阵
 
     void update_prior_est(MatrixXd);            // 进行先验估计
     void update_p_prior_est(void);              // 进行先验协方差更新
@@ -33,7 +34,9 @@ private:
     bool P_setted_ = false;               // P矩阵设置开关量
     bool H_setted_ = false;               // 观测矩阵设置
     bool R_setted_ = false;               // R矩阵设置开关量
-    bool Zk_setted = false;               // 当前测量量
+    bool Zk_setted_ = false;              // 当前测量量
+    bool G_setted_ = false;               // 控制矩阵设置开关量
+    bool U_setted_ = false;
 
 public:
     VectorXd X_hat_prior_; // 先验值
@@ -46,6 +49,8 @@ public:
     bool set_R(MatrixXd);                                    // 设置观测噪声矩阵
     bool set_P(MatrixXd);                                    // 设置P矩阵
     bool set_H(MatrixXd);                                    // 设置观测矩阵
+    bool set_G(MatrixXd);                                    // 设置控制矩阵
+    bool set_U(VectorXd);                                    // 设置输入矩阵
 
     VectorXd kalman_measure(VectorXd, MatrixXd);
     ~kalmanxd();
@@ -65,8 +70,14 @@ kalmanxd::kalmanxd(VectorXd X)
 void kalmanxd::update_prior_est(MatrixXd F)
 {
     F_ = F;
-    X_hat_prior_ = F_ * X_hat_;
-    // X_hat_prior_ = F_ * X_hat_+U_;
+    if (G_setted_ == true && U_setted_ == true)
+    {
+        X_hat_prior_ = F * X_hat_ + G_ * U_;
+    }
+    else
+    {
+        X_hat_prior_ = F_ * X_hat_;
+    }
 }
 
 /**
@@ -162,24 +173,42 @@ bool kalmanxd::initialize(MatrixXd Q, MatrixXd P, MatrixXd H, MatrixXd R)
 bool kalmanxd::set_Q(MatrixXd Q)
 {
     Q_ = Q;
+    Q_setted_ = true;
     return true;
 }
 
 bool kalmanxd::set_P(MatrixXd P)
 {
     P_ = P;
+    P_setted_ = true;
     return true;
 }
 
 bool kalmanxd::set_H(MatrixXd H)
 {
     H_ = H;
+    H_setted_ = true;
     return true;
 }
 
 bool kalmanxd::set_R(MatrixXd R)
 {
     R_ = R;
+    R_setted_ = true;
+    return true;
+}
+
+bool kalmanxd::set_G(MatrixXd G)
+{
+    G_ = G;
+    G_setted_ = true;
+    return true;
+}
+
+bool kalmanxd::set_U(VectorXd U)
+{
+    U_ = U;
+    U_setted_ = true;
     return true;
 }
 
