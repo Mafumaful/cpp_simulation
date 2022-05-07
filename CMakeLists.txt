@@ -20,5 +20,5 @@ target_link_libraries(filter_average ${PYTHON_LIBRARIES})
 add_executable(filter_kalman_p src/filter_kalman_p.cpp)
 target_link_libraries(filter_kalman_p ${PYTHON_LIBRARIES})  
 
-add_executable(filter_kalman_pv src/filter_kalman_pv.cpp)
-target_link_libraries(filter_kalman_pv ${PYTHON_LIBRARIES})
+add_executable(filter_kalman_pa src/filter_kalman_pa.cpp)
+target_link_libraries(filter_kalman_pa ${PYTHON_LIBRARIES})

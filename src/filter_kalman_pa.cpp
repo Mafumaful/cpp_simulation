@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
     // prepare to plot the 3D figure
     draw3D _plot;
 
-    // // position with noise, this is the data we can observe
+    // 位置误差, 这是我们传感器能够观测到的数据
     Vector3d p_noise = p + generate_randown(r_noise);
     Vector3d a_noise = a + generate_randown(r_noise);
 
@@ -77,9 +77,10 @@ int main(int argc, char const *argv[])
         vec << p_noise, a_noise;
         VectorXd filtered = _kf.kalman_measure(vec, F);
 
-        // store the pose to plot
+        // 保存位置向量以及噪声
         _plot.input_vector(p, "true number");
         _plot.input_vector(p_noise, "noise");
+        // 前三个值表示的是位置，所以采用前三个
         _plot.input_vector(filtered.segment<3>(0), "filtered");
     }
 
