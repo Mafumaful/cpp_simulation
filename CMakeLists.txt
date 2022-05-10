@@ -22,3 +22,18 @@ target_link_libraries(filter_kalman_p ${PYTHON_LIBRARIES})
 
 add_executable(filter_kalman_pa src/filter_kalman_pa.cpp)
 target_link_libraries(filter_kalman_pa ${PYTHON_LIBRARIES})
+
+add_executable(filter_2D_avg src/filter_2D_avg.cpp)
+target_link_libraries(filter_2D_avg ${PYTHON_LIBRARIES})
+
+add_executable(filter_2D_avg_med src/filter_2D_avg_med.cpp)
+target_link_libraries(filter_2D_avg_med ${PYTHON_LIBRARIES})
+
+add_executable(filter_2D_first_order src/filter_2D_first_order.cpp)
+target_link_libraries(filter_2D_first_order ${PYTHON_LIBRARIES})
+
+add_executable(filter_2D_limit src/filter_2D_limit.cpp)
+target_link_libraries(filter_2D_limit ${PYTHON_LIBRARIES})
+
+add_executable(filter_2D_median src/filter_2D_median.cpp)
+target_link_libraries(filter_2D_median ${PYTHON_LIBRARIES})
