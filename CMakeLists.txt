@@ -38,6 +38,5 @@ target_link_libraries(filter_2D_limit ${PYTHON_LIBRARIES})
 add_executable(filter_2D_median src/filter_2D_median.cpp)
 target_link_libraries(filter_2D_median ${PYTHON_LIBRARIES})
 
-
-add_executable(filter_extend_kalman src/extend_filter_kalman.cpp)
+add_executable(filter_extend_kalman src/filter_extend_kalman.cpp)
 target_link_libraries(filter_extend_kalman ${PYTHON_LIBRARIES})
