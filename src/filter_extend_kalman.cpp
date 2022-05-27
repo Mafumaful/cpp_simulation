@@ -122,11 +122,11 @@ int main(int argc, char const *argv[])
 
     ekf->update_ekf(Eigen::Vector2d(1, 1), Eigen::Vector4d::Zero(), x_init, p_init);
     filtered = ekf->x_hat_;
-    cout << filtered << endl;
 
     draw2D plot_true("");
     draw2D plot_filter("");
     draw2D plot_noise("");
+    draw2D plot_vx("");
 
     for (double t; t < 10; t += dt)
     {
@@ -144,11 +144,16 @@ int main(int argc, char const *argv[])
 
         plot_noise.set_x(z(0) * cos(z(1)));
         plot_noise.set_y("data with noise", z(0) * sin(z(1)));
+
+        plot_vx.set_x(t);
+        plot_vx.set_y("vy", vel(1));
+        plot_vx.set_y("filtered vy", ekf->x_hat_(3));
     }
 
     plot_true.draw();
     plot_noise.draw();
     plot_filter.draw();
+    plot_vx.draw();
 
     delete ekf;
 }

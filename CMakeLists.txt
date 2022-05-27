@@ -40,3 +40,6 @@ target_link_libraries(filter_2D_median ${PYTHON_LIBRARIES})
 
 add_executable(filter_extend_kalman src/filter_extend_kalman.cpp)
 target_link_libraries(filter_extend_kalman ${PYTHON_LIBRARIES})
+
+add_executable(filter_unscented_kalman src/filter_unscented_kalman)
+target_link_libraries(filter_unscented_kalman ${PYTHON_LIBRARIES})
