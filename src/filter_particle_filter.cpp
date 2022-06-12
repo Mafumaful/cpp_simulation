@@ -124,7 +124,6 @@ void ParticleFilter::updateWeights(const double std_landmark[],
                     landmark = cur_l;
                 }
             }
-
             // 使用多元高斯分布更新权重
             double num = exp(-0.5 * (pow((transformed_obs.x - landmark.x), 2) / pow(std_x, 2) + pow((transformed_obs.y - landmark.y), 2) / pow(std_y, 2)));
             double denom = 2 * M_PI * std_x * std_y;
@@ -162,7 +161,7 @@ void ParticleFilter::resample() {
 
 int main() {
     double sigma_pos [3] = {0.01, 0.01, 0.001}; 
-    double sigma_landmark [2] = {0.1, 0.1};
+    double sigma_landmark [2] = {0.5, 0.5};
     double pos_array[3] = {3, 3, 0.1}; 
     std::normal_distribution<double> N_x_init(0, sigma_pos[0]);
     std::normal_distribution<double> N_y_init(0, sigma_pos[1]);
@@ -204,13 +203,12 @@ int main() {
                 n_y = N_obs_y(gen);
                 LandmarkObs obs = observations[j];
                 // this time pose
-                double best_particle_x = best_particle.x + 10 * (sin(best_particle.theta + 0.01) - sin(best_particle.theta));
-                double best_particle_y = best_particle.y + 10 * (cos(best_particle.theta) - cos(best_particle.theta + 0.01));
+                double best_particle_x = pos_array[0] + 10 * (sin(pos_array[2] + 0.01) - sin(pos_array[2]));
+                double best_particle_y = pos_array[1] + 10 * (cos(pos_array[2]) - cos(pos_array[2] + 0.01));
                 obs.id = obs.id;
-                obs.x = abs(obs.x -best_particle_x)+ n_x;//check
-                obs.y = abs(obs.y -best_particle_y)+ n_y;
+                obs.x = abs(obs.x -pos_array[0])+ n_x;//check
+                obs.y = abs(obs.y -pos_array[1])+ n_y;
                 noisy_observations.push_back(obs);
-                std::cout <<"noise:"<<best_particle_x<<","<<best_particle_y <<std::endl;
         }
         
         // 完成三四步的更新和冲采样
