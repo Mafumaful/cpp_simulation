@@ -160,8 +160,8 @@ void ParticleFilter::resample() {
 }
 
 int main() {
-    double sigma_pos [3] = {0.01, 0.01, 0.001}; 
-    double sigma_landmark [2] = {0.5, 0.5};
+    double sigma_pos [3] = {0.3, 0.3, 0.01}; 
+    double sigma_landmark [2] = {0.1, 0.1};
     double pos_array[3] = {3, 3, 0.1}; 
     std::normal_distribution<double> N_x_init(0, sigma_pos[0]);
     std::normal_distribution<double> N_y_init(0, sigma_pos[1]);
@@ -176,7 +176,7 @@ int main() {
     best_particle.theta=pos_array[2];
     best_particle.x=pos_array[0];
     best_particle.y=pos_array[1];
-    for(int m =0; m<10 ;m++){
+    for(int m =0; m<100 ;m++){
         if (!pf.initialized()) {// 如果pf初始化还未初始化
             n_x = N_x_init(gen); // 加入噪声
             n_y = N_y_init(gen);
@@ -206,8 +206,8 @@ int main() {
                 double best_particle_x = pos_array[0] + 10 * (sin(pos_array[2] + 0.01) - sin(pos_array[2]));
                 double best_particle_y = pos_array[1] + 10 * (cos(pos_array[2]) - cos(pos_array[2] + 0.01));
                 obs.id = obs.id;
-                obs.x = abs(obs.x -pos_array[0])+ n_x;//check
-                obs.y = abs(obs.y -pos_array[1])+ n_y;
+                obs.x = obs.x -pos_array[0]+ n_x;//check
+                obs.y = obs.y -pos_array[1]+ n_y;
                 noisy_observations.push_back(obs);
         }
         
