@@ -43,3 +43,6 @@ target_link_libraries(filter_extend_kalman ${PYTHON_LIBRARIES})
 
 add_executable(filter_unscented_kalman src/filter_unscented_kalman)
 target_link_libraries(filter_unscented_kalman ${PYTHON_LIBRARIES})
+
+add_executable(filter_particle_filter src/filter_particle_filter)
+target_link_libraries(filter_particle_filter ${PYTHON_LIBRARIES})
