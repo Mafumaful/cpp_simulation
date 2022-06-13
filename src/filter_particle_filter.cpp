@@ -259,11 +259,8 @@ int main()
             particle_x.push_back(particles[l].x);
             particle_y.push_back(particles[l].y);
         }
-        std::cout << pos_array[0] << "," << pos_array[1] << "," << pos_array[2] << "," << best_particle.x << "," << best_particle.y << "," << best_particle.theta << std::endl;
-        pos_array[0] = pos_array[0] + 10 * (sin(pos_array[2] + 0.01) - sin(pos_array[2]));
-        pos_array[1] = pos_array[1] + 10 * (cos(pos_array[2]) - cos(pos_array[2] + 0.01));
-        pos_array[2] = pos_array[2] + (0.01);
 
+        std::cout << pos_array[0] << "," << pos_array[1] << "," << pos_array[2] << "," << best_particle.x << "," << best_particle.y << "," << best_particle.theta << std::endl;
         // 可视化
         true_x.push_back(pos_array[0]);
         true_y.push_back(pos_array[1]);
@@ -271,12 +268,16 @@ int main()
         // 可视化参数传递
         best_x.push_back(best_particle.x);
         best_y.push_back(best_particle.y);
+
+        pos_array[0] = pos_array[0] + 10 * (sin(pos_array[2] + 0.01) - sin(pos_array[2]));
+        pos_array[1] = pos_array[1] + 10 * (cos(pos_array[2]) - cos(pos_array[2] + 0.01));
+        pos_array[2] = pos_array[2] + (0.01);
     }
 
     //可视化
     stringmap property1({{"color", "#cce5cc"}, {"label", "particle"}, {"marker", "."}});
     stringmap property2({{"color", "blue"}, {"label", "best particle"}, {"marker", "*"}});
-    stringmap property3({{"color", "red"}, {"label", "true"}, {"marker", "*"}});
+    stringmap property3({{"color", "red"}, {"label", "true"}, {"marker", "+"}});
     plt::scatter(particle_x, particle_y, 1, property1);
     plt::scatter(best_x, best_y, 10, property2);
     plt::scatter(true_x, true_y, 5, property3);
