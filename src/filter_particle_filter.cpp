@@ -2,8 +2,12 @@
 #include <algorithm>
 #include <iostream>
 #include <numeric>
+
+// 可视化
 #include "matplotlibcpp.h"
 namespace plt = matplotlibcpp;
+#include <map>
+typedef std::map<std::string, std::string> stringmap;
 
 struct Particle
 {
@@ -177,6 +181,8 @@ void ParticleFilter::resample()
 
 int main()
 {
+    std::vector<double> best_x, best_y, particle_x, particle_y, true_x, true_y;
+
     double sigma_pos[3] = {0.3, 0.3, 0.01};
     double sigma_landmark[2] = {0.1, 0.1};
     double pos_array[3] = {3, 3, 0.1};
@@ -248,10 +254,37 @@ int main()
                 highest_weight = particles[l].weight;
                 best_particle = particles[l];
             }
+
+            // 可视化
+            particle_x.push_back(particles[l].x);
+            particle_y.push_back(particles[l].y);
         }
         std::cout << pos_array[0] << "," << pos_array[1] << "," << pos_array[2] << "," << best_particle.x << "," << best_particle.y << "," << best_particle.theta << std::endl;
         pos_array[0] = pos_array[0] + 10 * (sin(pos_array[2] + 0.01) - sin(pos_array[2]));
         pos_array[1] = pos_array[1] + 10 * (cos(pos_array[2]) - cos(pos_array[2] + 0.01));
         pos_array[2] = pos_array[2] + (0.01);
+
+        // 可视化
+        true_x.push_back(pos_array[0]);
+        true_y.push_back(pos_array[1]);
+
+        // 可视化参数传递
+        best_x.push_back(best_particle.x);
+        best_y.push_back(best_particle.y);
     }
+
+    //可视化
+    stringmap property1({{"color", "#cce5cc"}, {"label", "particle"}, {"marker", "."}});
+    stringmap property2({{"color", "blue"}, {"label", "best particle"}, {"marker", "*"}});
+    stringmap property3({{"color", "red"}, {"label", "true"}, {"marker", "*"}});
+    plt::scatter(particle_x, particle_y, 1, property1);
+    plt::scatter(best_x, best_y, 10, property2);
+    plt::scatter(true_x, true_y, 5, property3);
+
+    plt::title("particle filter");
+    plt::legend();
+    plt::xlabel("x(m)");
+    plt::ylabel("y(m)");
+    plt::grid(true);
+    plt::show();
 }
