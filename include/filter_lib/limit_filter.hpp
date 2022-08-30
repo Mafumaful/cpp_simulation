@@ -5,7 +5,7 @@ class limit_filter
 {
 private:
     double valid_number_ = 0;
-    double threashold_ = 0.3;
+    double threshold_ = 0.3;
 
 public:
     double filt(double);
@@ -15,7 +15,7 @@ public:
 
 double limit_filter::filt(double a)
 {
-    if (abs(a - valid_number_) > threashold_)
+    if (abs(a - valid_number_) > threshold_)
     {
         return valid_number_;
     }
